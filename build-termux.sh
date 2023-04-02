@@ -61,13 +61,6 @@ fi
 echo "Running repack.sh"
 ./revanced-misc-stuff/scripts/repack.sh
 
-#We are in 'cd build'
-
-PWD=$(pwd)
-mkdir -p ~/storage/downloads/revanced-extended
-for op in *; do
-	[ "$op" = "*" ] && continue
-	mv -f "${PWD}/${op}" ~/storage/downloads/revanced-extended/"${op}"
-done
-
-pr "Outputs are available in /sdcard/Download/revanced-extended folder"
+mkdir -p /sdcard/Download/re
+mv -f build/* /sdcard/Download/re
+pr "Outputs are available in /sdcard/Download/re folder"
