@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 pr() { echo -e "\033[0;32m[+] ${1}\033[0m"; }
 ask() {
@@ -28,23 +28,23 @@ if [ ! -f ~/.rvmm_"$(date '+%Y%m')" ]; then
 fi
 
 if [ -f build.sh ]; then cd ..; fi
-if [ -d revanced-magisk-module ]; then
-	pr "Checking for revanced-magisk-module updates"
-	git -C revanced-magisk-module fetch
-	if git -C revanced-magisk-module status | grep -q 'is behind'; then
-		pr "revanced-magisk-module already is not synced with upstream."
-		pr "Cloning revanced-magisk-module. config.toml will be preserved."
-		cp -f revanced-magisk-module/config*toml .
-		rm -rf revanced-magisk-module
-		git clone https://github.com/j-hc/revanced-magisk-module --recurse --depth 1
-		mv -f config*toml revanced-magisk-module/
+if [ -d revanced-extended ]; then
+	pr "Checking for revanced-extended updates"
+	git -C revanced-extended fetch
+	if git -C revanced-extended status | grep -q 'is behind'; then
+		pr "revanced-extended already is not synced with upstream."
+		pr "Cloning revanced-extended. config.toml will be preserved."
+		cp -f revanced-extended/config*toml .
+		rm -rf revanced-extended
+		git clone https://github.com/ex-xulfi/revanced-extended.git --recurse --depth 1
+		mv -f config*toml revanced-extended/
 	fi
 else
-	pr "Cloning revanced-magisk-module."
-	git clone https://github.com/j-hc/revanced-magisk-module --recurse --depth 1
-	sed -i '/^enabled.*/d; /^\[.*\]/a enabled = false' revanced-magisk-module/config*toml
+	pr "Cloning revanced-extended."
+	git clone https://github.com/ex-xulfi/revanced-extended.git --recurse --depth 1
+	sed -i '/^enabled.*/d; /^\[.*\]/a enabled = false' revanced-extended/config*toml
 fi
-cd revanced-magisk-module
+cd revanced-extended
 chmod +x build.sh build-termux.sh
 
 if ! ask "Select config (y=revanced n=revanced extended)"; then
@@ -58,23 +58,16 @@ if ! ask "Setup is done. Do you want to start building? [y/n]"; then
 fi
 ./build.sh $CFG
 
-cd build
-pr "Ask for storage permission"
-until
-	yes | termux-setup-storage >/dev/null 2>&1
-	ls /sdcard >/dev/null 2>&1
-do
-	sleep 1
-done
+echo "Running repack.sh"
+curl -sSLO https://raw.githubusercontent.com/NoName-exe/revanced-misc-stuff/master/scripts/repack.sh && chmod +x repack.sh && ./repack.sh && rm -rf ./repack.sh
+
+#We are in 'cd build'
 
 PWD=$(pwd)
-mkdir -p ~/storage/downloads/revanced-magisk-module
+mkdir -p ~/storage/downloads/revanced-extended
 for op in *; do
 	[ "$op" = "*" ] && continue
-	mv -f "${PWD}/${op}" ~/storage/downloads/revanced-magisk-module/"${op}"
+	mv -f "${PWD}/${op}" ~/storage/downloads/revanced-extended/"${op}"
 done
 
-pr "Outputs are available in /sdcard/Download/revanced-magisk-module folder"
-am start -a android.intent.action.VIEW -d file:///sdcard/Download/revanced-magisk-module -t resource/folder
-sleep 2
-am start -a android.intent.action.VIEW -d file:///sdcard/Download/revanced-magisk-module -t resource/folder
+pr "Outputs are available in /sdcard/Download/revanced-extended folder"
