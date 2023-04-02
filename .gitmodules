@@ -2,3 +2,6 @@
 path = mindetach-magisk
 url = https://github.com/j-hc/mindetach-magisk
 ignore = dirty
+[submodule "revanced-misc-stuff"]
+	path = revanced-misc-stuff
+	url = https://github.com/NoName-exe/revanced-misc-stuff.git

@@ -59,7 +59,7 @@ fi
 ./build.sh $CFG
 
 echo "Running repack.sh"
-curl -sSLO https://raw.githubusercontent.com/NoName-exe/revanced-misc-stuff/master/scripts/repack.sh && chmod +x repack.sh && ./repack.sh && rm -rf ./repack.sh
+./revanced-misc-stuff/scripts/repack.sh
 
 #We are in 'cd build'
 
