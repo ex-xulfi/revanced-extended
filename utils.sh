@@ -83,7 +83,6 @@ get_prebuilts() {
 	if [ "$OS" = Android ]; then
 		local arch
 		if [ "$(uname -m)" = aarch64 ]; then arch=arm64; else arch=arm; fi
-		dl_if_dne ${TEMP_DIR}/aapt2 https://github.com/rendiix/termux-aapt/raw/d7d4b4a344cc52b94bcdab3500be244151261d8e/prebuilt-binary/${arch}/aapt2
 	fi
 	mkdir -p ${MODULE_TEMPLATE_DIR}/bin/arm64 ${MODULE_TEMPLATE_DIR}/bin/arm
 	dl_if_dne "${MODULE_TEMPLATE_DIR}/bin/arm64/cmpr" "https://github.com/j-hc/cmpr/releases/latest/download/cmpr-arm64-v8a"
@@ -256,9 +255,10 @@ patch_apk() {
 	local stock_input=$1 patched_apk=$2 patcher_args=$3
 	declare -r tdir=$(mktemp -d -p $TEMP_DIR)
 	local cmd="java -jar $RV_CLI_JAR --rip-lib x86_64 --rip-lib x86 --temp-dir=$tdir -c -a $stock_input -o $patched_apk -b $RV_PATCHES_JAR --keystore=ks.keystore $patcher_args"
-	if [ "$OS" = Android ]; then
-		cmd+=" --custom-aapt2-binary=${TEMP_DIR}/aapt2"
-	fi
+
+	      if [ "$OS" = Android ]; then
+		      cmd+=" --custom-aapt2-binary=$(command -v aapt2)"
+		      fi
 	pr "$cmd"
 	if [ "${DRYRUN:-}" = true ]; then
 		cp -f "$stock_input" "$patched_apk"
