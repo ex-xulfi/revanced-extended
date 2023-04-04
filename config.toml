@@ -10,7 +10,7 @@ integrations-source = "inotia00/revanced-integrations"
 rv-brand = "ReVanced Extended"
 
 [YouTube]
-build-mode = "module"
+build-mode = "both"
 excluded-patches = "translations custom-branding-icon-afn-red custom-branding-icon-afn-blue custom-branding-icon-afn-revancify microg-support layout-switch hide-cast-button force-vp9-codec force-premium-heading enable-wide-searchbar enable-old-quality-layout enable-old-layout default-video-speed custom-branding-name default-video-quality"
 included-patches = "theme materialyou"
 version = "auto"
@@ -20,7 +20,7 @@ module-prop-name = "ytrvx-magisk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 
 [Music-arm64]
-build-mode = "module"
+build-mode = "both"
 app-name = "Music"
 excluded-patches = "custom-branding-music-afn-blue custom-branding-music-afn-red custom-branding-music-afn-revancify enable-force-shuffle enable-tablet-mode hide-compact-header hide-music-cast-button hide-taste-builder music-microg-support translations-music"
 included-patches = ""
